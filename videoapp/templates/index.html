@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Running Text Generator</title>
+</head>
+<body>
+    <h1>Running Text Generator</h1>
+    <form method="POST" action="{% url 'create_video' %}">
+        {% csrf_token %}
+        <label for="message">Введите текст:</label>
+        <input type="text" id="message" name="message"><br><br>
+
+        <label for="color">Цвет текста:</label>
+        <select id="color" name="color">
+            <option value="R">Красный</option>
+            <option value="G">Зеленый</option>
+            <option value="B">Синий</option>
+            <option value="Y">Желтый</option>
+            <option value="M">Пурпурный</option>
+            <option value="C">Голубой</option>
+            <option value="W">Белый</option>
+            <option value="K">Черный</option>
+        </select><br><br>
+
+        <label for="background">Цвет фона:</label>
+        <select id="background" name="background">
+            <option value="W">Белый</option>
+            <option value="K">Черный</option>
+            <option value="R">Красный</option>
+            <option value="G">Зеленый</option>
+            <option value="B">Синий</option>
+            <option value="Y">Желтый</option>
+            <option value="M">Пурпурный</option>
+            <option value="C">Голубой</option>
+        </select><br><br>
+
+        <input type="submit" value="Создать видео">
+    </form>
+
+    {% if video_url %}
+    <video width="640" height="360" controls>
+        <source src="{{ video_url }}" type="video/avi">
+        Ваш браузер не поддерживает видео.
+    </video>
+    {% endif %}
+</body>
+</html>
