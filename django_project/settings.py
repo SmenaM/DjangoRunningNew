@@ -5,15 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4ju2n@$f9d0c=h)_g0lbb%k9&@rf(xa$d$g$&5ri$uf)*gev^4'
 DEBUG = True
-ALLOWED_HOSTS = [
-    '.replit.dev',
-    '86ad144b-d23b-41a1-9085-3c413a41efa8-00-2ftuj2qvcdzag.sisko.replit.dev',
-]
+ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://86ad144b-d23b-41a1-9085-3c413a41efa8-00-2ftuj2qvcdzag.sisko.replit.dev',
-    'https://86ad144b-d23b-41a1-9085-3c413a41efa8-00-2ftuj2qvcdzag.sisko.replit.dev:3000',
-]
+CSRF_TRUSTED_ORIGINS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
