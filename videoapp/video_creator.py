@@ -3,7 +3,6 @@ import numpy as np
 import os
 from datetime import datetime
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from PIL import Image, ImageDraw, ImageFont
 
 # Параметры видео
@@ -46,13 +45,20 @@ def generate_video(message, color_choice, background_choice):
         out = cv2.VideoWriter(video_path, fourcc, fps, (width, height))
 
         # Путь к шрифту
-        font_path = "DroidSerif-Regular.ttf"  
+        font_path = "DroidSerif-Regular.ttf"  # Убедитесь, что шрифт доступен по указанному пути
         font_size = 20  # Размер шрифта
         font = ImageFont.truetype(font_path, font_size)
 
-        # Начальные координаты текста
+        # Вычисляем длину текста в пикселях
+        text_width, _ = font.getbbox(message)[2:]
+
+        # Вычисляем скорость движения текста, чтобы оно прошло экран за 3 секунды
+        total_distance = width + text_width  # Расстояние, которое текст должен пройти
+        speed_per_frame = total_distance / (fps * duration)  # Скорость текста в пикселях за кадр
+
+        # Начальная позиция текста
         x = width
-        y = height // 2 - 10  # Сдвиг по вертикали для корректного отображения текста
+        y = height // 2 - font_size // 2  # Сдвиг по вертикали для корректного отображения текста
 
         # Создание кадров видео
         for i in range(int(duration * fps)):
@@ -70,9 +76,7 @@ def generate_video(message, color_choice, background_choice):
             frame = np.array(pil_image)
 
             # Перемещение текста
-            x -= 2  # Скорость бегущей строки
-            if x < -len(message) * font_size // 2:  # Если текст полностью ушел за экран
-                x = width  # Переместите его обратно к правому краю
+            x -= speed_per_frame  # Скорость бегущей строки
 
             # Запись кадра в видео
             out.write(frame)
